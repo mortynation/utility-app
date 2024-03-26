@@ -3,8 +3,6 @@ import { useNavigate } from "react-router-dom";
 
 const Navbar = () => {
   const navigate = useNavigate();
-  let appList = ["Expense Tracker", "To Do List"];
-  const [app, setApp] = useState("Expense Tracker");
 
   return (
     <div className="bg-gray-800">
@@ -15,17 +13,17 @@ const Navbar = () => {
             navigate("/");
           }}
         >
-          {appList[0]}
+          Epense Tracker
         </button>
         <p className="text-white font-bold">{"|"}</p>
-        <p
+        <button
           className="text-white font-bold hover:bg-black active:border-black active:text-blue"
           onClick={() => {
             navigate("/toDoList");
           }}
         >
-          {appList[1]}
-        </p>
+          To Do List
+        </button>
       </div>
     </div>
   );
