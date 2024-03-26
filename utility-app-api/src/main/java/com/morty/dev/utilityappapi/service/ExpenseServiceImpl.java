@@ -48,6 +48,7 @@ public class ExpenseServiceImpl implements ExpenseService {
 
     @Override
     public Expense getExpense(Long id) {
+        System.out.println("Called from DB");
         return expenseRepository.findById(id).get();
     }
 

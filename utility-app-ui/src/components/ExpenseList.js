@@ -24,7 +24,7 @@ const ExpenseList = () => {
   }
 
   const categories = [
-    "Entertainment",
+    "Groceries",
     "Self Care",
     "Entertainment",
     "Utility",
@@ -97,6 +97,9 @@ const ExpenseList = () => {
           console.log(error);
         });
     } else {
+      setMonth(null);
+      setYear(null);
+      setCategory(null);
       fetchData();
     }
   };
@@ -105,10 +108,20 @@ const ExpenseList = () => {
     currSum += Number(exp);
   };
 
-  const handleCategoryDropdown = (e, cat) => {
+  const handleCategoryDropdown = (e, item) => {
     e.preventDefault();
+    setCategory(item);
+    sortExpensesByCategory(e, item);
     setIsCategoryDDOpen(false);
-    setCategory(cat);
+  };
+
+  const sortExpensesByCategory = (e, category) => {
+    e.preventDefault();
+    if (expenses) {
+      setExpenses((prevElement) => {
+        return prevElement.filter((expense) => expense.category === category);
+      });
+    }
   };
 
   return (
@@ -161,6 +174,27 @@ const ExpenseList = () => {
               </div>
             )}
           </div>
+          <div>
+            <button
+              className="rounded-lg bg-gray-400 text-gray-600 px-6 py-2 font-semibold justify-between border active:border-black duration-300 active:text-white"
+              onClick={(prev) => setIsCategoryDDOpen((prev) => !prev)}
+            >
+              {category ? category : "Category"}
+            </button>
+            {isCategoryDDOpen && (
+              <div className="bg-gray-200 absolute flex flex-col items-start rounded-lg p-2 w-200 top-full mt-2">
+                {categories.map((item, i) => (
+                  <div
+                    onClick={(e, cat) => handleCategoryDropdown(e, item)}
+                    className="justify-between w-24 rounded-lg px-2 hover:cursor-pointer hover:bg-gray-100"
+                    key={i}
+                  >
+                    <h3>{item}</h3>
+                  </div>
+                ))}
+              </div>
+            )}
+          </div>
           <button
             className="rounded-lg bg-gray-400 text-gray-600 px-6 py-2 font-semibold justify-between border active:border-black duration-300 active:text-white"
             onClick={sortExpensesByYearAndMonth}
@@ -176,26 +210,9 @@ const ExpenseList = () => {
               <th className="text-left font-medium text-gray-500 uppercase tracking-wider py-3 px-6">
                 Expense Name
               </th>
-              <th
-                className="text-left font-medium text-gray-500 uppercase tracking-wider py-3 px-6"
-                onClick={(prev) => setIsCategoryDDOpen((prev) => !prev)}
-              >
+              <th className="text-left font-medium text-gray-500 uppercase tracking-wider py-3 px-6">
                 Category
-                {isCategoryDDOpen && (
-                  <div className="bg-gray-200 absolute flex flex-col items-start rounded-lg p-2">
-                    {categories.map((item, i) => (
-                      <div
-                        onClick={(e, cat) => handleCategoryDropdown(e, item)}
-                        className="justify-between w-full rounded-lg px-2 hover:cursor-pointer hover:bg-gray-100"
-                        key={i}
-                      >
-                        <h3>{item}</h3>
-                      </div>
-                    ))}
-                  </div>
-                )}
               </th>
-
               <th className="text-left font-medium text-gray-500 uppercase tracking-wider py-3 px-6">
                 Expense
               </th>

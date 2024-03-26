@@ -58,6 +58,7 @@
 				</configuration>
 			</plugin>
 		</plugins>
+		<finalName>utility-app-api</finalName>
 	</build>
 
 </project>

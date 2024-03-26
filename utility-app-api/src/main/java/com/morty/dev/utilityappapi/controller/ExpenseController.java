@@ -3,6 +3,9 @@ package com.morty.dev.utilityappapi.controller;
 
 import com.morty.dev.utilityappapi.model.Expense;
 import com.morty.dev.utilityappapi.service.ExpenseService;
+import org.springframework.cache.annotation.CacheEvict;
+import org.springframework.cache.annotation.Cacheable;
+import org.springframework.cache.annotation.EnableCaching;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
@@ -13,6 +16,7 @@ import java.util.Map;
 @RestController
 @CrossOrigin("http://localhost:3000")
 @RequestMapping("/api/v1")
+@EnableCaching
 public class ExpenseController {
 
     private final ExpenseService expenseService;
@@ -32,6 +36,7 @@ public class ExpenseController {
     }
 
     @DeleteMapping("/expenses/{id}")
+    @CacheEvict(key="#id", value="Expense")
     public ResponseEntity<Map<String, Boolean>> deleteExpense(@PathVariable Long id) {
         Boolean deleted = false;
         deleted = expenseService.deleteExpense(id);
@@ -41,6 +46,7 @@ public class ExpenseController {
     }
 
     @GetMapping("/expenses/{id}")
+    @Cacheable(key = "#id", value = "Expense")
     public Expense getExpense(@PathVariable Long id) {
         return expenseService.getExpense(id);
     }
